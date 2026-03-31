@@ -1,0 +1,37 @@
+package exercice1;
+
+import java.awt.Dimension;
+import graphicLayer.GRect;
+import graphicLayer.GSpace;
+import java.awt.Point;
+
+public class Exercice1_0 {
+	GSpace space = new GSpace("Exercice 1", new Dimension(200, 150));
+	GRect robi = new GRect();
+
+	public Exercice1_0() {
+		space.addElement(robi);
+		space.open();
+		
+		while(true) {
+			int x=robi.getX();
+			
+			while(x+robi.getWidth()<space.getWidth()) {
+				int currentWidth = space.getWidth();
+				int step = currentWidth/100;
+				
+				robi.setPosition(new Point(step,0));
+				
+				try { Thread.sleep(50); } catch (InterruptedException e) {}
+			}
+			
+			
+		}
+		
+	}
+
+	public static void main(String[] args) {
+		new Exercice1_0();
+	}
+
+}

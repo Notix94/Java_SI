@@ -1,0 +1,47 @@
+import graphicLayer.GSpace;
+import graphicLayer.GRect;
+import stree.sparser.SParser;
+import stree.sparser.SNode;
+import java.awt.Dimension;
+
+public class TestImport {
+    public static void main(String[] args) {
+        // Test graphicLayer
+        GSpace space = new GSpace("Test", new Dimension(200, 150));
+        GRect robi = new GRect();
+        space.addElement(robi);
+        space.open();
+        System.out.println("graphicLayer OK");
+
+        // Test SParser
+        SParser<SNode> parser = new SParser<>();
+        System.out.println("SParser OK");
+    }
+}
+```
+
+Lance-le (`Run` → `Run as Java Application`). Si tu vois une fenêtre s'ouvrir et les deux lignes `OK` dans la console, tout est bien installé.
+
+---
+
+## Ce que tu dois voir si tout est bon
+
+Dans ton Package Explorer, ça doit ressembler à ça :
+```
+📁 Robi2026
+   └── 📁 src
+       └── TestImport.java
+📁 2DGraphicCore
+   └── 📁 src
+       └── 📁 graphicLayer
+           ├── GSpace.java
+           ├── GRect.java
+           ├── GOval.java
+           ├── GImage.java
+           └── 📁 demos  ← regarde ces fichiers !
+📁 SParser
+   └── 📁 src
+       └── 📁 stree
+           └── 📁 sparser
+               ├── SParser.java
+               └── SNode.java

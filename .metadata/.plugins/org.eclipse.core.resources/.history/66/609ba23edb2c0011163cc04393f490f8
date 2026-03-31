@@ -1,0 +1,20 @@
+import graphicLayer.GSpace;
+import graphicLayer.GRect;
+import stree.parser.SParser;
+import stree.parser.SNode;
+import java.awt.Dimension;
+
+public class TestImport {
+    public static void main(String[] args) {
+        // Test graphicLayer
+        GSpace space = new GSpace("Test", new Dimension(200, 150));
+        GRect robi = new GRect();
+        space.addElement(robi);
+        space.open();
+        System.out.println("graphicLayer OK");
+
+        // Test SParser
+        SParser<SNode> parser = new SParser<>();
+        System.out.println("SParser OK");
+    }
+}

@@ -1,0 +1,49 @@
+package exercice1;
+
+import java.awt.Dimension;
+import graphicLayer.GRect;
+import graphicLayer.GSpace;
+import java.awt.Point;
+
+public class Exercice1_0 {
+	GSpace space = new GSpace("Exercice 1", new Dimension(200, 150));
+	GRect robi = new GRect();
+
+	public Exercice1_0() {
+		space.addElement(robi);
+		space.open();
+		
+		new Thread(() -> {
+			while (true) {
+				int x = space.getWidth() - robi.getWidth();
+				int y = space.getHeight() - robi.getHeight();
+				
+				if(robi.getX() < x && robi.getY() <=0) {
+					robi.setPosition(new Point(x,robi.getY()));
+					robi.translate(new Point(1,0));
+				}
+				
+				else if (robi.getX() >=x && robi.getY()<y) {
+					robi.setPosition(new Point(robi.getX(),y));
+					robi.translate(new Point(0,1));
+				}
+				
+				else if (robi.getX()> x && robi.getY()>y) {
+					robi.setPosition(new Point(x,y));
+				}
+				
+				try { Thread.sleep(10); } catch (InterruptedException e) {}
+			
+			}
+		}).start();
+			
+			
+		
+		
+	}
+
+	public static void main(String[] args) {
+		new Exercice1_0();
+	}
+
+}

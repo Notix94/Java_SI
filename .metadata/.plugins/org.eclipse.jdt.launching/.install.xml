@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dirs>
+    <entry loc="/usr/lib/jvm/temurin-21-jre-amd64" stamp="1747637404793"/>
+    <entry loc="/usr/lib/jvm/java-17-openjdk-amd64" stamp="1718011457484"/>
+    <entry loc="/opt/eclipse-java/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_21.0.6.v20250130-0529/jre" stamp="1751550625465"/>
+    <entry loc="/usr/lib/jvm/temurin-21-jdk-amd64" stamp="1747637403193"/>
+    <entry loc="/opt/eclipse-java/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_21.0.6.v20250130-0529" stamp="1751550625465"/>
+</dirs>
