@@ -10,26 +10,66 @@ public class Reference {
 
     public Reference(Object receiver) {
         this.receiver = receiver;
-        this.primitives = new HashMap<String, Command>(); // [cite: 266]
+        this.primitives = new HashMap<>();
+    }
+    
+    public Reference(int value) {
+        this.receiver = value;
+        this.primitives = new HashMap<>();
+    }
+    
+    public Reference(boolean value) {
+        this.receiver = value;
+        this.primitives = new HashMap<>();
+    }
+    
+    public Reference(String value) {
+        this.receiver = value;
+        this.primitives = new HashMap<>();
     }
 
     public Object getReceiver() {
         return receiver;
     }
+    
+    public void setReceiver(Object receiver) {
+        this.receiver = receiver;
+    }
 
     public void addCommand(String selector, Command primitive) {
-        primitives.put(selector, primitive); // [cite: 197]
+        primitives.put(selector, primitive); 
     }
 
     public Command getCommandByName(String selector) {
-        return primitives.get(selector); // [cite: 197]
+        return primitives.get(selector);
     }
 
-    // Cette méthode remplace la logique de tri manuelle [cite: 197, 306]
+    // Cette methode remplace la logique de tri manuelle 
     public Reference run(SNode method, Environment env) {
-        String selector = method.get(1).contents(); // Récupère le nom de la commande
+        String selector = method.get(1).contents(); // recupe le nom de la commande
         Command cmd = getCommandByName(selector);
         if (cmd == null) throw new Error("Commande inconnue : " + selector);
         return cmd.run(this, method, env);
+    }
+    
+    public int asInt() {
+        if (receiver instanceof Integer) {
+            return (Integer) receiver;
+        } else if (receiver instanceof String) {
+            try {
+                return Integer.parseInt((String) receiver);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Cannot convert to int: " + receiver);
+            }
+        } else {
+            throw new RuntimeException("Cannot convert to int: " + receiver);
+        }
+    }
+
+    public boolean isTrue() {
+        if (receiver instanceof Boolean) return (Boolean) receiver;
+        if (receiver instanceof Integer) return ((Integer) receiver) != 0;
+        if (receiver instanceof String) return !((String) receiver).isEmpty();
+        return receiver != null;
     }
 }

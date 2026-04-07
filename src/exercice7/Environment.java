@@ -31,4 +31,14 @@ public class Environment {
         if (r == null && parent != null) return parent.getReferenceByName(name);
         return r;
     }
+    
+    public void setReference(String name, Reference ref) {
+        if (variables.containsKey(name)) {
+            variables.put(name, ref); // met à jour la variable existante
+        } else if (parent != null && parent.getReferenceByName(name) != null) {
+            parent.setReference(name, ref); // met à jour dans le parent
+        } else {
+            variables.put(name, ref); // crée une nouvelle variable locale
+        }
+    }
 }
