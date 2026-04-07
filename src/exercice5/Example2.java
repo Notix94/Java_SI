@@ -1,6 +1,6 @@
 package exercice5;
 
-import exercice6.Exercice6;
+//import exercice6.Exercice6;
 
 public class Example2 {
 	
@@ -25,8 +25,8 @@ public class Example2 {
 	
 	
 	public  void launch() {
-		Exercice6 exo = new Exercice6();
-		exo.oneShot(script);
+		//Exercice6 exo = new Exercice6();
+		//exo.oneShot(script);
 	}
 	
 	public static void main(String[] args) {
