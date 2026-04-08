@@ -11,11 +11,20 @@ import graphicLayer.GSpace;
 import stree.parser.SNode;
 import stree.parser.SParser;
 
+/**
+ * Cette classe orchestre l'exercice 3. Son intention est d'implémenter le 
+ * Design Pattern Command pour gagner en modularité. 
+ * Contrairement à l'exercice précédent, la logique d'exécution n'est plus 
+ * centralisée dans l'interpréteur mais distribuée dans des classes spécialisées.
+ * * Variables d'instance :
+ * - space/robi : les cibles graphiques manipulées par le script.
+ * - script : séquence d'instructions textuelles testant le mouvement et la couleur.
+ * * Dépendances : Interface Command et ses implémentations (RobiTranslate, SpaceSleep, etc.)
+ */
 public class Exercice3_0 {
 	GSpace space = new GSpace("Exercice 3", new Dimension(200, 100));
 	GRect robi = new GRect();
 	
-	// Le script qui sera interprété ligne par ligne
 	String script = "" +
 	"   (space setColor black) " +
 	"   (robi setColor yellow)" +
@@ -38,6 +47,9 @@ public class Exercice3_0 {
 		this.runScript();
 	}
 
+	/**
+	 * Analyse le script et itère sur les nœuds racines pour lancer l'exécution.
+	 */
 	private void runScript() {
 		SParser<SNode> parser = new SParser<>();
 		List<SNode> rootNodes = null;
@@ -52,24 +64,31 @@ public class Exercice3_0 {
 		}
 	}
 
+	/**
+	 * Point d'entrée de l'exécution d'une commande.
+	 * Applique le principe de polymorphisme : on appelle cmd.run() sans savoir 
+	 * s'il s'agit d'un mouvement ou d'un changement de couleur.
+	 */
 	private void run(SNode expr) {
-		// On récupère l'instance de la commande correspondante 
 		Command cmd = getCommandFromExpr(expr);
 		if (cmd == null)
 			throw new Error("unable to get command for: " + expr);
 		
-		// L'exécution revient à envoyer le message run à l'instance 
 		cmd.run();
 	}
 
 	/**
-	 * Analyse la S-expression pour retourner l'instance de Command appropriée.
-	 * Utilise une double conditionnelle : la cible, puis l'action.
+	 * ALGORITHME : FACTORY DE COMMANDES
+	 * Cette méthode joue le rôle de "fabrique". Elle analyse la structure du nœud 
+	 * (Cible + Action) pour instancier la classe concrète correspondante.
+	 * * @param expr Le nœud syntaxique (S-expression)
+	 * @return Une instance de Command prête à être exécutée, ou null si l'instruction est invalide.
 	 */
 	Command getCommandFromExpr(SNode expr) {
-		String target = expr.get(0).contents(); // "space" ou "robi" 
-		String action = expr.get(1).contents(); // "setColor", "sleep", "translate" 
+		String target = expr.get(0).contents(); // Identifie le récepteur ("space" ou "robi") 
+		String action = expr.get(1).contents(); // Identifie l'action ("setColor", "sleep", "translate") 
 
+		// Dispatching vers les commandes du Space
 		if (target.equals("space")) {
 			if (action.equals("setColor")) {
 				Color c = getColorFromString(expr.get(2).contents());
@@ -78,7 +97,9 @@ public class Exercice3_0 {
 				int delay = Integer.parseInt(expr.get(2).contents());
 				return new SpaceSleep(delay);
 			}
-		} else if (target.equals("robi")) {
+		} 
+		// Dispatching vers les commandes de Robi
+		else if (target.equals("robi")) {
 			if (action.equals("setColor")) {
 				Color c = getColorFromString(expr.get(2).contents());
 				return new RobiChangeColor(robi, c);
@@ -92,7 +113,8 @@ public class Exercice3_0 {
 	}
 
 	/**
-	 * Méthode utilitaire pour convertir le texte du script en objet Color.
+	 * Mappe les chaînes de caractères du script vers des objets java.awt.Color.
+	 * Utilisé pour assurer la transition entre le langage de script et l'API Java.
 	 */
 	private Color getColorFromString(String colorName) {
 		switch (colorName.toLowerCase()) {

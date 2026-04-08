@@ -4,6 +4,12 @@ import graphicLayer.GElement;
 import graphicLayer.GContainer;
 import stree.parser.SNode;
 
+/**
+ * Commande cœur de l'exercice 5 : gère la hiérarchie des objets.
+ * Permet d'imbriquer des éléments (ex: robi dans space) et de construire 
+ * des chemins d'accès uniques pour chaque composant.
+ * Dépendances : Environment, Interpreter.
+ */
 public class AddElement implements Command {
     private Environment env;
 
@@ -13,23 +19,23 @@ public class AddElement implements Command {
 
     @Override
     public Reference run(Reference reference, SNode method) {
-        // On récupère le nom local (ex: "robi")
+        // Extraction du nom local défini dans le script (ex: "robi")
         String childName = method.get(2).contents();
         
-        // On fabrique l'objet (ex: le rectangle) via l'interpréteur
+        // Instanciation récursive de l'élément via le moteur de l'interpréteur
         Reference newElemRef = new Interpreter().compute(env, method.get(3));
         
-        // --- L'EXERCICE 5 ---
-        // On construit le nom complet : "nomDuParent.nomDuFils" (ex: "space.robi")
+        // ALGORITHME DE NOMMAGE COMPOSÉ :
+        // On construit le chemin absolu (ex: "space.robi") pour garantir 
+        // l'unicité de l'objet dans l'annuaire global.
         String compositeName = reference.getName() + "." + childName;
         newElemRef.setName(compositeName);
-        // ----------------------------------------------
 
-        // On ajoute l'élément physiquement dans le conteneur (Space, Rect, etc.)
+        // Intégration dans la structure graphique parente
         GContainer container = (GContainer) reference.getReceiver();
         container.addElement((GElement) newElemRef.getReceiver());
         
-        // On l'enregistre dans l'annuaire avec son nom composé ("space.robi")
+        // Enregistrement du chemin complet dans l'environnement
         env.addReference(compositeName, newElemRef);
         
         return newElemRef;

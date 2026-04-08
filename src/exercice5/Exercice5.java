@@ -8,32 +8,42 @@ import stree.parser.SNode;
 import stree.parser.SParser;
 import tools.Tools;
 
+/**
+ * Point d'entrée principal de l'Exercice 5.
+ * Cette classe orchestre la création de l'environnement, l'enregistrement des 
+ * primitives et la gestion des deux modes d'exécution : script unique ou interactif.
+ */
 public class Exercice5 {
     public Environment environment = new Environment();
 
     public Exercice5() {
+        // Initialisation de l'espace graphique de rendu
         GSpace space = new GSpace("Exercice 5 - Hierarchie", new Dimension(500, 500));
         space.open();
 
-        // --- ETAPE 1 : Creer les references avec leurs noms ---
+        // CONFIGURATION DE LA RÉFÉRENCE RACINE
+        // 'space' est le point d'entrée de la hiérarchie graphique.
         Reference spaceRef = new Reference(space, "space");
+        
+        // RÉFÉRENCES DE CLASSES 
+        // Elles permettent d'instancier dynamiquement de nouveaux objets via 'new'.
         Reference rectClassRef = new Reference(GRect.class, null);
         Reference ovalClassRef = new Reference(GOval.class, null);
         Reference imageClassRef = new Reference(GImage.class, null);
         Reference stringClassRef = new Reference(GString.class, null);
 
-        // --- ETAPE 2 : Ajouter les commandes ---
+        // INJECTION DES COMMANDES SYSTÈME
         spaceRef.addCommand("setColor", new SetColor());
         spaceRef.addCommand("add", new AddElement(environment));
         spaceRef.addCommand("del", new DelElement(environment));
         
-        // On donne l'env a NewElement pour qu'il puisse creer des AddElement plus tard
+        // On injecte l'environnement dans les usines pour supporter le nommage hiérarchique
         rectClassRef.addCommand("new", new NewElement(environment));
         ovalClassRef.addCommand("new", new NewElement(environment));
         imageClassRef.addCommand("new", new NewImage());
         stringClassRef.addCommand("new", new NewString());
 
-        // --- ETAPE 3 : Enregistrer dans l'annuaire ---
+        // ENREGISTREMENT DANS L'ANNUAIRE GLOBAL
         environment.addReference("space", spaceRef);
         environment.addReference("Rect", rectClassRef);
         environment.addReference("Oval", ovalClassRef);
@@ -41,7 +51,10 @@ public class Exercice5 {
         environment.addReference("Label", stringClassRef);
     }
 
-    // Cette methode permet a Example1 de fonctionner
+    /**
+     * Mode d'exécution "One-Shot" : Parse et exécute un script complet.
+     * Utilisé notamment par les classes d'exemples (Example1, Example2).
+     */
     public void oneShot(String script) {
         SParser<SNode> parser = new SParser<>();
         try {
@@ -56,7 +69,10 @@ public class Exercice5 {
         }
     }
 
-    // La boucle pour taper des commandes au clavier
+    /**
+     *Boucle interactive : Permet de piloter l'environnement 
+     * en temps réel via la console.
+     */
     public void mainLoop() {
         while (true) {
             System.out.print("> ");
@@ -67,7 +83,6 @@ public class Exercice5 {
         }
     }
 
-    // Permet de lancer Exercice5 directement
     public static void main(String[] args) {
         new Exercice5().mainLoop();
     }

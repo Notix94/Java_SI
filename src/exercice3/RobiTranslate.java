@@ -1,8 +1,13 @@
 package exercice3;
 
-import java.awt.Point; // Nécessaire pour utiliser la méthode translate de GBounded
+import java.awt.Point;
 import graphicLayer.GRect;
 
+/**
+ * Commande gérant le déplacement relatif de Robi (GRect).
+ * Adapte les coordonnées entières du script pour l'API graphique.
+ * Dépendance : Interface Command.
+ */
 public class RobiTranslate implements Command {
     private GRect robi;
     private int dx, dy;
@@ -15,7 +20,7 @@ public class RobiTranslate implements Command {
 
     @Override
     public void run() {
-        // On crée un nouvel objet Point car la signature est translate(Point gap)
+        // Applique le vecteur de déplacement via un objet Point
         robi.translate(new Point(dx, dy));
     }
 }
