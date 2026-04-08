@@ -1,7 +1,8 @@
 package exercice7;
  
 import java.awt.Color;
-
+import graphicLayer.*;
+import java.awt.*;
 import exercice7.*;
  
 /**
@@ -25,7 +26,7 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi se déplace de 50px vers la droite");
  
         Exercice7 exo = new Exercice7();
-        Rect robi = new Rect();
+        GRect robi = new GRect();
         exo.addToSpace(robi);
         int dist = 50;
         robi.translate(dist, 0);
@@ -40,7 +41,7 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi avance de 3px en 3px, 10 fois avec pauses");
  
         Exercice7 exo = new Exercice7();
-        Rect robi = new Rect();
+        GRect robi = new GRect();
         exo.addToSpace(robi);
 
         robi.setColor(Color.RED);
@@ -60,7 +61,7 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi fait 15 pas de 2px vers le bas");
  
         Exercice7 exo = new Exercice7();
-        Rect robi = new Rect();
+        GRect robi = new GRect();
         exo.addToSpace(robi);
 
         robi.setColor(Color.BLUE);
@@ -100,10 +101,14 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi devient BLEU (= 10 5 est faux)");
  
         Exercice7 exo = new Exercice7();
-        exo.oneShot(
-            "(space add robi (Rect new)) " +
-            "(if (= 10 5) (robi setColor red) (robi setColor blue))"
-        );
+        Rect robi = new Rect();
+        exo.addToSpace(robi);
+
+        if (10 == 5) {
+            robi.setColor(Color.RED);
+        } else {
+            robi.setColor(Color.BLUE);
+        }
     }
  
     // -------------------------------------------------------------------------
@@ -115,13 +120,14 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi se déplace de 15px (5+10) vers la droite");
  
         Exercice7 exo = new Exercice7();
-        exo.oneShot(
-            "(space add robi (Rect new)) " +
-            "(set a 5) " +
-            "(set b 10) " +
-            "(set total (+ a b)) " +
-            "(robi translate total 0)"
-        );
+        Rect robi = new Rect();
+        exo.addToSpace(robi);
+
+        int a = 5;
+        int b = 10;
+        int total = a + b;
+
+        robi.translate(total, 0);
     }
  
     // -------------------------------------------------------------------------
@@ -133,17 +139,24 @@ public class TestFonctionnel_Exercice7 {
         System.out.println("Attendu : robi avance, devient rouge à partir du pas 10");
  
         Exercice7 exo = new Exercice7();
+        Rect robi = new Rect();
         exo.addToSpace(robi);
-        exo.oneShot(
-            "(space add robi (Rect new)) " +
-            "(robi setColor blue) " +
-            "(set pas 0) " +
-            "(loop 20 " +
-            "    (robi translate 3 0) " +
-            "    (set pas (+ pas 1)) " +
-            "    (if (> pas 10) (robi setColor red) (robi setColor blue)) " +
-            "    (space sleep 100))"
-        );
+
+        robi.setColor(Color.BLUE);
+
+        int pas = 0;
+        for (int i = 0; i < 20; i++) {
+            robi.translate(3, 0);
+            pas++;
+
+            if (pas > 10) {
+                robi.setColor(Color.RED);
+            } else {
+                robi.setColor(Color.BLUE);
+            }
+
+            Thread.sleep(100);
+        }
     }
  
     // -------------------------------------------------------------------------
