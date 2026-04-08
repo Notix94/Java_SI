@@ -2,18 +2,23 @@ package exercice5;
 
 import exercice5.Exercice5;
 
+/**
+ * Classe de test unitaire pour l'exercice 5.
+ * Son rôle est de valider le mode d'exécution "One-Shot" : le moteur interprète 
+ * un script complet sans passer par l'interface interactive.
+ */
 public class Example1 {
 	
-	/* 
-	 * Ajoute un rectangle robi avec ses propriétés par défaut
-	 * On doit voir un rectangle bleu en (0,0)
-	 * 
+	/**
+	 * Scénario de test :
+	 * Crée un rectangle nommé "robi" et l'ajoute au conteneur "space".
+	 * Valide la commande 'add' et l'instanciation dynamique 'new'.
 	 */
 	String script = "(space add robi (Rect new))";
 	
-	
-	public  void launch() {
+	public void launch() {
 		Exercice5 exo = new Exercice5();
+		// Exécution immédiate du script défini ci-dessus
 		exo.oneShot(script);
 	}
 	
@@ -21,4 +26,3 @@ public class Example1 {
 		new Example1().launch();
 	}
 }
-  

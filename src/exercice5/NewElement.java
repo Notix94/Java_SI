@@ -3,10 +3,18 @@ package exercice5;
 import graphicLayer.GElement;
 import stree.parser.SNode;
 
+/**
+ * Usine à objets dynamique  pour l'exercice 5.
+ * En plus d'instancier les composants, elle leur injecte la capacité 
+ * de devenir des conteneurs, permettant ainsi une hiérarchie infinie.
+ */
 public class NewElement implements Command {
     private Environment env;
 
-    // MODIF : On ajoute un constructeur pour recevoir l'environnement
+    /**
+     * Le constructeur reçoit l'environnement global pour permettre 
+     * aux futurs objets enfants d'y être enregistrés.
+     */
     public NewElement(Environment env) {
         this.env = env;
     }
@@ -14,23 +22,26 @@ public class NewElement implements Command {
     @Override
     public Reference run(Reference reference, SNode method) {
         try {
+            // INSTANCIATION RÉFLEXIVE
+            // On récupère la classe Java (ex: GRect.class) pour créer l'instance.
             @SuppressWarnings("unchecked")
             Class<GElement> type = (Class<GElement>) reference.getReceiver();
             GElement e = type.getDeclaredConstructor().newInstance();
             
-            // MODIF : On crée la référence avec un nom à null 
-            // (C'est AddElement qui lui donnera son nom définitif "parent.enfant")
+            // CRÉATION DE LA RÉFÉRENCE
+            // Le nom est initialisé à null car l'identité finale (chemin composé) 
+            // est déterminée par la commande 'add' du parent.
             Reference ref = new Reference(e, null);
             
-            // Commandes de base
+            // CATALOGUE DE COMMANDES DE BASE
             ref.addCommand("setColor", new SetColor());
             ref.addCommand("translate", new Translate());
             ref.addCommand("setDim", new SetDim());
             
-            // --- MODIF EXERCICE 5 ---
-            // On permet à ce nouvel objet d'être lui-même un conteneur
+            // --- LOGIQUE HIÉRARCHIQUE (EXERCICE 5) ---
+            // On rend l'objet "capable" d'ajouter des sous-éléments. 
+            // C'est cette ligne qui permet de faire (robi add bras (Rect new)).
             ref.addCommand("add", new AddElement(env));
-            // ------------------------------------
             
             return ref;
         } catch (Exception e) {

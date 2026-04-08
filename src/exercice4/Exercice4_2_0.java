@@ -4,44 +4,44 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-
-import graphicLayer.GImage;
-import graphicLayer.GOval;
-import graphicLayer.GRect;
-import graphicLayer.GSpace;
-import graphicLayer.GString;
+import graphicLayer.*;
 import stree.parser.SNode;
 import stree.parser.SParser;
 import tools.Tools;
 
+/**
+ * Extension dynamique de l'interpréteur (Exercice 4.2).
+ * Cette classe permet de manipuler non seulement des instances, mais aussi des 
+ * classes comme objets (méta-programmation) pour créer de nouveaux éléments 
+ * graphiques via le script.
+ */
 public class Exercice4_2_0 {
-	// Une seule variable d'instance : notre annuaire
-	Environment environment = new Environment();
+	private Environment environment = new Environment();
 
 	public Exercice4_2_0() {
-		// On agrandit un peu la fenêtre pour voir tout le monde
 		GSpace space = new GSpace("Exercice 4.2 - Dynamique", new Dimension(400, 400));
 		space.open();
 
+		// Création des références pour les objets et pour les Classes (usines)
 		Reference spaceRef = new Reference(space);
 		Reference rectClassRef = new Reference(GRect.class);
 		Reference ovalClassRef = new Reference(GOval.class);
 		Reference imageClassRef = new Reference(GImage.class);
 		Reference stringClassRef = new Reference(GString.class);
 
+		// Configuration des commandes système
 		spaceRef.addCommand("setColor", new SetColor());
 		spaceRef.addCommand("sleep", new Sleep());
-
-		// FIX : On passe l'environnement pour que Add et Del puissent modifier l'annuaire
 		spaceRef.addCommand("add", new AddElement(environment));
 		spaceRef.addCommand("del", new DelElement(environment));
 		
+		// Les commandes "new" sont attachées aux références de classes
 		rectClassRef.addCommand("new", new NewElement());
 		ovalClassRef.addCommand("new", new NewElement());
 		imageClassRef.addCommand("new", new NewImage());
 		stringClassRef.addCommand("new", new NewString());
 
-		// On enregistre les références avec les noms attendus par ton script
+		// Enregistrement dans l'annuaire global
 		environment.addReference("space", spaceRef);
 		environment.addReference("Rect", rectClassRef);
 		environment.addReference("Oval", ovalClassRef);
@@ -51,6 +51,10 @@ public class Exercice4_2_0 {
 		this.mainLoop();
 	}
 	
+	/**
+	 * Boucle : délègue maintenant l'évaluation au moteur 'Interpreter'.
+	 * Permet l'interprétation récursive des S-expressions complexes.
+	 */
 	private void mainLoop() {
 		System.out.println("Interpréteur prêt !");
 		while (true) {
@@ -69,7 +73,7 @@ public class Exercice4_2_0 {
 			if (compiled != null) {
 				Iterator<SNode> itor = compiled.iterator();
 				while (itor.hasNext()) {
-					// L'interpréteur exécute chaque ligne
+					// Utilisation du moteur récursif pour traiter chaque instruction
 					new Interpreter().compute(environment, itor.next());
 				}
 			}
