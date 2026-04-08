@@ -16,17 +16,17 @@ public class Exercice7 {
         environment.addReference("*", new Reference(new MulCommand()));
         environment.addReference("/", new Reference(new DivCommand()));
         
-        environment.addReference(">", new Reference(new SupCommand()));
-        environment.addReference("<", new Reference(new InfCommand()));
-        environment.addReference(">=", new Reference(new StricSupCommand()));
-        environment.addReference("<=", new Reference(new StricInfCommand()));
+        environment.addReference(">", new Reference(new StricSupCommand()));
+        environment.addReference("<", new Reference(new StricInfCommand()));
+        environment.addReference(">=", new Reference(new SupCommand()));
+        environment.addReference("<=", new Reference(new InfCommand()));
         environment.addReference("=", new Reference(new EgalCommand()));
 
         this.mainLoop();
     }
 
     private void mainLoop() {
-        System.out.println("Exercice 7 prêt !");
+        System.out.println("Exercice 7 prï¿½t !");
         while (true) {
             System.out.print("> ");
             String input = Tools.readKeyboard();
