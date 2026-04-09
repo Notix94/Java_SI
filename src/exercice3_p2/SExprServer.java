@@ -35,10 +35,10 @@ public class SExprServer {
                 try (Socket client = serverSocket.accept();
                      BufferedReader in  = new BufferedReader(new InputStreamReader(client.getInputStream()));
                      PrintWriter    out = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true)) {
-
+                			
                     String sexpr = in.readLine();
                     if (sexpr == null) continue;
-                    
+                    					
                     System.out.println("📩 Reçu : " + sexpr);
 
                     SParser<SNode> parser = new SParser<>();
