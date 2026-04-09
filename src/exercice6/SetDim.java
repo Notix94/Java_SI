@@ -1,7 +1,6 @@
 package exercice6;
 
 import java.awt.Dimension;
-import graphicLayer.GElement;
 import graphicLayer.GRect;
 import graphicLayer.GOval;
 import stree.parser.SNode;
@@ -25,7 +24,8 @@ public class SetDim implements Command {
 		return receiver;
 	}
 
-	// Cherche la valeur dans l'env si c'est un nom de paramètre, sinon parse directement
+	// Cherche la valeur dans l'env si c'est un nom de paramètre, sinon parse
+	// directement
 	private int resolveInt(String value, Environment env) {
 		Reference r = env.getReferenceByName(value);
 		if (r != null && r.getReceiver() instanceof String) {
