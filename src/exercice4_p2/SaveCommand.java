@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.awt.Point;
 import java.awt.Color;
 
+
 /**
  * Commande de sauvegarde (Exercice 4).
  * Extrait l'état actuel de Robi et l'écrit dans un fichier au format JSON.

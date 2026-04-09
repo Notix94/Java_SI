@@ -1,7 +1,7 @@
 package exercice3_p2;
 
 import exercice6.*; 
-import exercice7.SetColor; 
+
 import graphicLayer.*;
 import stree.parser.*;
 
