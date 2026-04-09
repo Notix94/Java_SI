@@ -29,7 +29,7 @@ public class SaveCommand implements Command {
             Color c = Color.BLACK; // Valeur par défaut
             try {
                 // On cherche l'attribut "color" dans la classe GElement (parent de GRect)
-                Field field = r.getClass().getSuperclass().getDeclaredField("color");
+                Field field = findFieldInClassHierarchy(r.getClass(),"color");
                 field.setAccessible(true); // On force l'accès (s'il est protected ou private)
                 c = (Color) field.get(r);   // On récupère la couleur réelle de l'objet
             } catch (Exception e) {
@@ -57,5 +57,17 @@ public class SaveCommand implements Command {
             e.printStackTrace();
         }
         return receiver;
+    }
+ // Ajoute cette méthode dans ta classe SaveCommand
+    private Field findFieldInClassHierarchy(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+        Class<?> current = clazz;
+        while (current != null) {
+            try {
+                return current.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                current = current.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException("Field " + fieldName + " not found in class hierarchy");
     }
 }
