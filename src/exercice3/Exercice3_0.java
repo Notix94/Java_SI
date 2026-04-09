@@ -46,6 +46,13 @@ public class Exercice3_0 {
 		space.open();
 		this.runScript();
 	}
+	
+	public Exercice3_0(String scriptPerso) {
+	    this.script = scriptPerso;
+	    space.addElement(robi);
+	    space.open();
+	    this.runScript();
+	}
 
 	/**
 	 * Analyse le script et itère sur les nœuds racines pour lancer l'exécution.
@@ -70,6 +77,7 @@ public class Exercice3_0 {
 	 * s'il s'agit d'un mouvement ou d'un changement de couleur.
 	 */
 	private void run(SNode expr) {
+		
 		Command cmd = getCommandFromExpr(expr);
 		if (cmd == null)
 			throw new Error("unable to get command for: " + expr);

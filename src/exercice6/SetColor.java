@@ -14,7 +14,16 @@ public class SetColor implements Command {
     @Override
     public Reference run(Reference receiver, SNode method, Environment env) {
         Object target = receiver.getReceiver();
-        Color c = colors.getOrDefault(method.get(2).contents().toLowerCase(), Color.BLACK);
+        String colorName = method.get(2).contents();
+        
+        
+        
+        Reference r = env.getReferenceByName(colorName);
+        if (r != null && r.getReceiver() instanceof String) {
+            colorName = (String) r.getReceiver();
+        }
+        
+        Color c = colors.getOrDefault(colorName.toLowerCase(), Color.BLACK);
         
         if (target instanceof GElement) ((GElement) target).setColor(c);
         else if (target instanceof GSpace) ((GSpace) target).setColor(c);

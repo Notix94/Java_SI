@@ -36,6 +36,8 @@ public class Exercice5 {
         spaceRef.addCommand("setColor", new SetColor());
         spaceRef.addCommand("add", new AddElement(environment));
         spaceRef.addCommand("del", new DelElement(environment));
+        spaceRef.addCommand("setDim", new SetDim());
+        spaceRef.addCommand("sleep", new Sleep());
         
         // On injecte l'environnement dans les usines pour supporter le nommage hiérarchique
         rectClassRef.addCommand("new", new NewElement(environment));
