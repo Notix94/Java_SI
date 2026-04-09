@@ -122,5 +122,10 @@ public class TestsInterpreteurRobi {
     public static void main(String[] args) {
         // Changer le numéro pour tester un scénario différent
         test3_AnimationTranslate();
+        //test1_ConfigurationCouleurs();
+        //test2_ConfigurationInverse();
+       // test4_ScriptSujet();
+       //test5_GrandDeplacement();
+       // test6_CommandeInconnue();
     }
 }

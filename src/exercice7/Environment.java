@@ -34,11 +34,11 @@ public class Environment {
     
     public void setReference(String name, Reference ref) {
         if (variables.containsKey(name)) {
-            variables.put(name, ref); // met � jour la variable existante
+            variables.put(name, ref); // met a jour la variable existante
         } else if (parent != null && parent.getReferenceByName(name) != null) {
-            parent.setReference(name, ref); // met � jour dans le parent
+            parent.setReference(name, ref); // met a jour dans le parent
         } else {
-            variables.put(name, ref); // cr�e une nouvelle variable locale
+            variables.put(name, ref); // cree une nouvelle variable locale
         }
     }
 }

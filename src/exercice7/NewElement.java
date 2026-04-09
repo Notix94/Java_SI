@@ -16,6 +16,9 @@ public class NewElement implements Command {
             ref.addCommand("setColor", new SetColor());
             ref.addCommand("translate", new Translate());
             ref.addCommand("setDim", new SetDim());
+            ref.addCommand("add",       new AddElement(env));
+            ref.addCommand("del",       new DelElement(env));
+            ref.addCommand("addScript", new AddScript(env));
             
             return ref;
         } catch (Exception e) {

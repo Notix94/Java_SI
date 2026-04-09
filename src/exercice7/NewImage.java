@@ -12,11 +12,14 @@ public class NewImage implements Command {
         String path = (pathRef != null && pathRef.getReceiver() instanceof String)
                       ? (String) pathRef.getReceiver()
                       : pathKey;
+        System.out.println("DEBUG - fichier existe : " + 
+        	    new java.io.File(path).exists());
         Image imgSource = new ImageIcon(path).getImage();
         GImage img = new GImage(imgSource);
         
         Reference newRef = new Reference(img);
         newRef.addCommand("translate", new Translate());
+        newRef.addCommand("setColor",  new SetColor());
         return newRef;
     }
 }

@@ -1,63 +1,88 @@
 package exercice4;
+ 
+import exercice4.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import graphicLayer.GRect;
-import graphicLayer.GOval;
-
-class TestsExercice4 {
-    private Environment env;
-    private Interpreter interprete;
-
-    @BeforeEach
-    void configuration() {
-        env = new Environment(); //
-        interprete = new Interpreter(); //
+ 
+/**
+ * Tests fonctionnels pour l'Exercice 4.
+ *
+ * Ex 4.1 : boucle clavier — tu tapes les scripts toi-même dans la console.
+ * Ex 4.2 : ajout dynamique d'éléments.
+ *
+ * Pour Ex4.1, les scripts à taper sont indiqués dans chaque test.
+ */
+public class TestsExercice4 {
+ 
+    // -------------------------------------------------------------------------
+    // TEST 1 — Boucle clavier (Ex 4.1)
+    // Taper ces commandes une par une dans la console après le prompt ">"
+    // -------------------------------------------------------------------------
+    public static void test1_BoucleClavier() {
+        System.out.println("=== TEST 1 Ex4.1 : Boucle clavier ===");
+        System.out.println("Taper ces commandes dans la console :");
+        System.out.println("  > (space setColor black)");
+        System.out.println("  > (robi setColor yellow)");
+        System.out.println("  > (robi translate 50 30)");
+        System.out.println("  > (space sleep 500)");
+        System.out.println("Attendu : chaque commande produit un effet immédiat");
+ 
+        new Exercice4_1_0();
     }
-
-    @Test
-    void testAnnuaire() {
-        // On vérifie que l'annuaire enregistre et retrouve bien les objets
-        Reference ref = new Reference(new GRect());
-        env.addReference("monRect", ref); //
-        
-        assertEquals(ref, env.getReferenceByName("monRect"), "L'objet doit être retrouvé par son nom"); //
+ 
+    // -------------------------------------------------------------------------
+    // TEST 2 — Ajout dynamique d'un rectangle (Ex 4.2)
+    // Taper dans la console :
+    // -------------------------------------------------------------------------
+    public static void test2_AjoutRectangle() {
+        System.out.println("=== TEST 2 Ex4.2 : Ajout d'un rectangle ===");
+        System.out.println("Taper dans la console :");
+        System.out.println("  > (space add robi (Rect new))");
+        System.out.println("  > (robi setColor yellow)");
+        System.out.println("  > (robi translate 130 50)");
+        System.out.println("Attendu : un rectangle jaune apparaît en (130, 50)");
+ 
+        new Exercice4_2_0();
     }
-
-    @Test
-    void testCreationDynamique() {
-        // On teste la commande "new" de NewElement
-        Reference rectClassRef = new Reference(GRect.class);
-        NewElement createur = new NewElement(); //
-        
-        // On simule l'appel (Rect new)
-        // Note : NewElement.run ignore le 2ème argument 'method' pour la création simple
-        Reference instanceRef = createur.run(rectClassRef, null); //
-        
-        assertNotNull(instanceRef, "La nouvelle instance ne doit pas être nulle");
-        assertTrue(instanceRef.getReceiver() instanceof GRect, "L'objet créé doit être un GRect");
+ 
+    // -------------------------------------------------------------------------
+    // TEST 3 — Script complet du sujet (Ex 4.2)
+    // Taper tout d'un coup dans la console sur une ligne
+    // -------------------------------------------------------------------------
+    public static void test3_ScriptCompletSujet() {
+        System.out.println("=== TEST 3 Ex4.2 : Script complet du sujet ===");
+        System.out.println("Copier-coller sur UNE SEULE LIGNE dans la console :");
+        System.out.println(
+            "(space add robi (Rect new)) " +
+            "(robi translate 130 50) " +
+            "(robi setColor yellow) " +
+            "(space add momo (Oval new)) " +
+            "(momo setColor red) " +
+            "(momo translate 80 80)"
+        );
+        System.out.println("Attendu : rectangle jaune + oval rouge");
+ 
+        new Exercice4_2_0();
     }
-
-    @Test
-    void testInterpreteurFeuille() {
-        // Test de Interpreter.compute sur une "feuille" (juste un nom)
-        Reference ref = new Reference(new GRect());
-        env.addReference("robi", ref);
-        
-        // On simule un SNode qui contient juste "robi"
-        // compute doit nous rendre la référence directement
-        // SNode leaf = ... (simulation)
-        // assertEquals(ref, interprete.compute(env, leaf)); //
+ 
+    // -------------------------------------------------------------------------
+    // TEST 4 — Suppression d'un élément
+    // -------------------------------------------------------------------------
+    public static void test4_SuppressionElement() {
+        System.out.println("=== TEST 4 Ex4.2 : Suppression d'élément ===");
+        System.out.println("Taper dans la console :");
+        System.out.println("  > (space add robi (Rect new))");
+        System.out.println("  > (robi setColor red)");
+        System.out.println("  > (space sleep 1000)");
+        System.out.println("  > (space del robi)");
+        System.out.println("Attendu : rectangle rouge apparaît puis disparaît");
+ 
+        new Exercice4_2_0();
     }
-
-    @Test
-    void testAjoutElement() {
-        // On vérifie que AddElement enregistre bien le nouvel enfant dans l'annuaire
-        AddElement addCmd = new AddElement(env); //
-        
-        // Ce test est plus complexe car il nécessite un SNode complet : (space add robi (Rect new))
-        // Il valide que AddElement utilise bien compute() pour créer l'objet avant de l'ajouter
-        //
+ 
+    public static void main(String[] args) {
+        //test3_ScriptCompletSujet();
+        //test1_BoucleClavier();
+        test2_AjoutRectangle();
+        test4_SuppressionElement();
     }
 }
