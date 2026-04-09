@@ -1,4 +1,4 @@
-package exercice1_p2;
+package exercice2_p2;
 import exercice6.*;
 import graphicLayer.*;
 import stree.parser.*;

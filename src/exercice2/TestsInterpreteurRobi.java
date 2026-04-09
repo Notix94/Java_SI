@@ -28,9 +28,7 @@ public class TestsInterpreteurRobi {
         System.out.println("=== TEST 1 : Configuration couleurs ===");
         System.out.println("Attendu : fond de fenêtre NOIR, robi JAUNE");
 
-        Exercice2_1_0 exo = new Exercice2_1_0(
-            "(space setColor black) (robi setColor yellow)"
-        );
+        Exercice2_1_0 exo = new Exercice2_1_0("(space setColor black) (robi setColor yellow)");
         exo.run();
     }
 

@@ -12,7 +12,7 @@ import stree.parser.SNode;
 import stree.parser.SParser;
 
 /**
- * Cette classe orchestre l'exercice 3. Son intention est d'implémenter le 
+ * Son intention est d'implémenter le 
  * Design Pattern Command pour gagner en modularité. 
  * Contrairement à l'exercice précédent, la logique d'exécution n'est plus 
  * centralisée dans l'interpréteur mais distribuée dans des classes spécialisées.
