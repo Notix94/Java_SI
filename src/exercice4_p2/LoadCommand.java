@@ -10,14 +10,15 @@ import java.util.stream.Collectors;
 public class LoadCommand implements Command {
     @Override
     public Reference run(Reference receiver, SNode method, Environment env) {
-        String fileName = method.get(2).contents();
+        // Cela permet de trouver le fichier propre créé par SaveCommand
+        String fileName = method.get(2).contents().replace("\"", "");
         
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             // Lecture de tout le fichier
             String json = reader.lines().collect(Collectors.joining());
             
             // ÉTAPE 1 : Nettoyage pour éviter les erreurs de parsing
-            // On enlève les espaces, les retours à la ligne et les guillemets
+            // On enlève les espaces, les retours à la ligne et les guillemets internes
             String clean = json.replaceAll("\\s+", "").replaceAll("\"", "");
 
             // ÉTAPE 2 : Extraction de la partie couleur [R,G,B]
@@ -39,6 +40,7 @@ public class LoadCommand implements Command {
             // C'est ce script qui sera envoyé au Client et exécuté par le Serveur
             String script = "(robi setColor " + r + " " + g + " " + b + ") (robi setPosition " + x + " " + y + ")";
             
+            System.out.println("🔄 Chargement depuis : " + fileName);
             System.out.println("🔄 Reconstruction : " + script);
 
             SParser<SNode> parser = new SParser<>();
@@ -53,6 +55,8 @@ public class LoadCommand implements Command {
             // On renvoie les nouveaux nœuds pour que SExprServer les envoie au CLIENT
             return new Reference(nodes); 
 
+        } catch (FileNotFoundException e) {
+            System.err.println("❌ Fichier introuvable : " + fileName);
         } catch (Exception e) {
             System.err.println("❌ Erreur lors du chargement du fichier " + fileName);
             e.printStackTrace();

@@ -120,8 +120,10 @@ public class ClientIHM extends JFrame {
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Fichier");
-        fileMenu.add(menuItem("Sauvegarder Scène", "(space save \"save_robi.json\")"));
-        fileMenu.add(menuItem("Charger Scène", "(space load \"save_robi.json\")"));
+    
+        fileMenu.add(menuItem("Sauvegarder Scène", "(space save save_robi.json)"));
+        fileMenu.add(menuItem("Charger Scène", "(space load save_robi.json)"));
+        
         fileMenu.addSeparator();
         fileMenu.add(menuItem("📸 Capture d'écran", "(space screenshot)"));
 
@@ -129,6 +131,7 @@ public class ClientIHM extends JFrame {
         for (String c : new String[]{"red", "blue", "green", "yellow", "black"}) {
             colorMenu.add(menuItem(c, "(robi setColor " + c + ")"));
         }
+        
         menuBar.add(fileMenu);
         menuBar.add(colorMenu);
         setJMenuBar(menuBar);

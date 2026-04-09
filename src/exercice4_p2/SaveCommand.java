@@ -10,12 +10,14 @@ import java.awt.Color;
 /**
  * Commande de sauvegarde (Exercice 4).
  * Extrait l'état actuel de Robi et l'écrit dans un fichier au format JSON.
+ * Nettoie le nom du fichier pour éviter les guillemets sur le disque.
  */
 public class SaveCommand implements Command {
     @Override
     public Reference run(Reference receiver, SNode method, Environment env) {
         // Syntaxe attendue : (space save "ma_scene.json")
-        String fileName = method.get(2).contents();
+        // Nettoyage du nom : on retire les guillemets récupérés par le parseur
+        String fileName = method.get(2).contents().replace("\"", "");
         
         try (FileWriter writer = new FileWriter(fileName)) {
             // Récupération de Robi depuis l'environnement
@@ -26,6 +28,7 @@ public class SaveCommand implements Command {
             Point p = r.getPosition();
 
             // Construction manuelle d'un JSON simple
+            // Les coordonnées et couleurs sont écrites sans guillemets (format Number)
             String json = "{\n" +
                 "  \"robi\": {\n" +
                 "    \"color\": [" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "],\n" +
