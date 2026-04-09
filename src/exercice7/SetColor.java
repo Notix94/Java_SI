@@ -14,20 +14,28 @@ public class SetColor implements Command {
     @Override
     public Reference run(Reference receiver, SNode method, Environment env) {
         Object target = receiver.getReceiver();
-        String colorName = method.get(2).contents();
-        
-        
-        
-        Reference r = env.getReferenceByName(colorName);
-        if (r != null && r.getReceiver() instanceof String) {
-            colorName = (String) r.getReceiver();
+        Color c;
+
+        String arg = method.get(2).contents();
+
+        try {
+            // Mode RGB numérique : (robi setColor 0 0 255)
+            int r = Integer.parseInt(arg);
+            int g = Integer.parseInt(method.get(3).contents());
+            int b = Integer.parseInt(method.get(4).contents());
+            c = new Color(r, g, b);
+        } catch (NumberFormatException e) {
+            // Mode nom de couleur : (robi setColor blue)
+            Reference ref = env.getReferenceByName(arg);
+            if (ref != null && ref.getReceiver() instanceof String) {
+                arg = (String) ref.getReceiver();
+            }
+            c = colors.getOrDefault(arg.toLowerCase(), Color.BLACK);
         }
-        
-        Color c = colors.getOrDefault(colorName.toLowerCase(), Color.BLACK);
-        
+
         if (target instanceof GElement) ((GElement) target).setColor(c);
         else if (target instanceof GSpace) ((GSpace) target).setColor(c);
-        
+
         return receiver;
     }
 }

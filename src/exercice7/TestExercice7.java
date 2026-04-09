@@ -110,9 +110,9 @@ public class TestExercice7 {
 	public static void main(String[] args) {
 		// test1_VariableLocale();
 		// test7_CombinaisonComplexe();
-		test2_BoucleSimple();
+		//test2_BoucleSimple();
 		// test3_BoucleAvecVariable();
-		// test4_ConditionnelleVraie();
+		 test4_ConditionnelleVraie();
 		// test5_ConditionnelleFausse();
 		// test6_Arithmetique();
 		// test8_ModeInteractif();

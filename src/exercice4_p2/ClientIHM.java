@@ -1,7 +1,6 @@
 package exercice4_p2;
 
 import exercice6.*;
-
 import graphicLayer.*;
 import stree.parser.SNode;
 
@@ -15,6 +14,10 @@ import java.util.*;
 import java.util.List;
 import javax.imageio.ImageIO;
 
+/**
+ * Interface Client pour le contrôle de Robi.
+ * Gère l'envoi de S-Expressions, l'historique, les raccourcis et le rendu local.
+ */
 public class ClientIHM extends JFrame {
 
 	private static final String HOST = "localhost";
@@ -171,7 +174,6 @@ public class ClientIHM extends JFrame {
 		String rec = (String) receiverBox.getSelectedItem();
 		String cmd = (String) commandBox.getSelectedItem();
 
-		// SECURITÉ : Screenshot/Save/Load sont toujours pour 'space'
 		if (cmd.equals("screenshot") || cmd.equals("save") || cmd.equals("load"))
 			rec = "space";
 
@@ -206,7 +208,6 @@ public class ClientIHM extends JFrame {
 					historyModel.addElement("→ " + script);
 
 					if (response != null) {
-						// Detection Screenshot : pas de crochets et long
 						if (!response.startsWith("[") && response.length() > 100) {
 							showScreenshot(response);
 						} else {
@@ -238,10 +239,8 @@ public class ClientIHM extends JFrame {
 	private void executeFromJson(String json, Environment env) {
 		if (json == null || !json.startsWith("["))
 			return;
-		// On nettoie les crochets extérieurs [[...],[...]] -> [...],[...]
 		String content = json.substring(1, json.length() - 1);
 
-		// Séparation des nœuds
 		String[] nodeStrings = content.split("\\],\\[");
 		for (String ns : nodeStrings) {
 			String clean = ns.replace("[", "").replace("]", "");
@@ -307,8 +306,17 @@ public class ClientIHM extends JFrame {
 		});
 	}
 
+    // ==========================================================
+    // MÉTHODES S-NODE CORRIGÉES (AJOUT DE SIZE())
+    // ==========================================================
+
 	private SNode buildSNode(List<String> tokens) {
 		return new SNode() {
+            @Override
+            public int size() {
+                return tokens.size();
+            }
+
 			public Boolean isLeaf() {
 				return false;
 			}
@@ -324,45 +332,29 @@ public class ClientIHM extends JFrame {
 				return list;
 			}
 
-			// AJOUT CRITIQUE POUR SetColor RGB
 			public SNode get(int i) {
 				return children().get(i);
 			}
 
-			public void setContents(String c) {
-			}
-
-			public void addToContents(Character c) {
-			}
-
-			public void setParent(SNode p) {
-			}
-
-			public void addChild(SNode c) {
-			}
-
-			public SNode parent() {
-				return null;
-			}
-
-			public int quote() {
-				return 0;
-			}
-
-			public void quote(int q) {
-			}
-
-			public Object alien() {
-				return null;
-			}
-
-			public void setAlien(Object o) {
-			}
+			public void setContents(String c) {}
+			public void addToContents(Character c) {}
+			public void setParent(SNode p) {}
+			public void addChild(SNode c) {}
+			public SNode parent() { return null; }
+			public int quote() { return 0; }
+			public void quote(int q) {}
+			public Object alien() { return null; }
+			public void setAlien(Object o) {}
 		};
 	}
 
 	private SNode leafNode(String val) {
 		return new SNode() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
 			public Boolean isLeaf() {
 				return true;
 			}
@@ -379,46 +371,24 @@ public class ClientIHM extends JFrame {
 				return null;
 			}
 
-			public void setContents(String c) {
-			}
-
-			public void addToContents(Character c) {
-			}
-
-			public void setParent(SNode p) {
-			}
-
-			public void addChild(SNode c) {
-			}
-
-			public SNode parent() {
-				return null;
-			}
-
-			public int quote() {
-				return 0;
-			}
-
-			public void quote(int q) {
-			}
-
-			public Object alien() {
-				return null;
-			}
-
-			public void setAlien(Object o) {
-			}
+			public void setContents(String c) {}
+			public void addToContents(Character c) {}
+			public void setParent(SNode p) {}
+			public void addChild(SNode c) {}
+			public SNode parent() { return null; }
+			public int quote() { return 0; }
+			public void quote(int q) {}
+			public Object alien() { return null; }
+			public void setAlien(Object o) {}
 		};
 	}
 
 	public static void main(String[] args) {
 		try {
-			// Force l'apparence native
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		SwingUtilities.invokeLater(ClientIHM::new);
 	}
 }
