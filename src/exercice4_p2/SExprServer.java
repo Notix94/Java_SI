@@ -41,37 +41,30 @@ public class SExprServer {
                     String sexpr = in.readLine();
                     if (sexpr == null) continue;
                     
-                    // Nettoyage esthétique des logs pour la console (suppression des guillemets)
                     System.out.println("📩 Reçu : " + sexpr.replace("\"", ""));
 
-                    // Parsing de la commande reçue
                     SParser<SNode> parser = new SParser<>();
                     List<SNode> nodes = parser.parse(sexpr);
                     
                     Object responseToClient = nodes;
 
-                    // Exécution de chaque nœud
                     for (SNode node : nodes) {
                         Reference result = interpreter.compute(env, node);
                         
                         if (result != null) {
                             Object obj = result.getReceiver();
-                            // Si le résultat est une liste (mouvements), on prépare le JSON
                             if (obj instanceof List) {
                                 responseToClient = obj;
-                            } 
-                            // Si le résultat est une longue String (Screenshot), on l'envoie telle quelle
-                            else if (obj instanceof String && ((String) obj).length() > 100) {
+                            } else if (obj instanceof String && ((String) obj).length() > 100) {
                                 responseToClient = obj;
                             }
                         }
                     }
 
-                    // Envoi de la réponse au client
                     if (responseToClient instanceof String) {
-                        out.println(responseToClient); // Envoi direct (Base64)
+                        out.println(responseToClient);
                     } else {
-                        out.println(serialize((List<SNode>) responseToClient)); // Envoi formaté (JSON)
+                        out.println(serialize((List<SNode>) responseToClient));
                     }
 
                 } catch (Exception e) {
@@ -82,16 +75,15 @@ public class SExprServer {
         }
     }
 
-    /**
-     * Définit le dictionnaire des commandes disponibles pour le serveur.
-     */
     private static Environment buildEnv(GSpace space, GRect robi) {
         Environment env = new Environment();
 
         // Référence pour l'objet "space"
         Reference spaceRef = new Reference(space);
-        spaceRef.addCommand("setColor",   new SetColor()); // Version RGB de l'exo 7
+        spaceRef.addCommand("setColor",   new SetColor());
         spaceRef.addCommand("sleep",      new Sleep());
+        spaceRef.addCommand("clear",      new ClearCommand());       
+        spaceRef.addCommand("del",        new DelElement(env));      
         spaceRef.addCommand("save",       new SaveCommand());
         spaceRef.addCommand("load",       new LoadCommand());
         spaceRef.addCommand("screenshot", new ScreenshotCommand());
@@ -102,15 +94,12 @@ public class SExprServer {
         robiRef.addCommand("setColor",    new SetColor());
         robiRef.addCommand("translate",   new Translate());
         robiRef.addCommand("setPosition", new SetPosition());
+        robiRef.addCommand("setDim",      new SetDim());           
         env.addReference("robi", robiRef);
 
         return env;
     }
 
-    /**
-     * Sérialise une liste de nœuds en format JSON.
-     * Les guillemets ici sont obligatoires pour respecter le formatage JSON standard.
-     */
     private static String serialize(List<SNode> nodes) {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < nodes.size(); i++) {
